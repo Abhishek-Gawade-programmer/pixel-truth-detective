@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
           <nav>
             <ul className="flex space-x-8">
               <li>
-                <Link to="/" className="flex items-center space-x-1 text-steg-text hover:text-steg-purple transition-colors">
+                <Link to="/analyze" className="flex items-center space-x-1 text-steg-text hover:text-steg-purple transition-colors">
                   <Microscope className="h-4 w-4" />
                   <span>Analyze</span>
                 </Link>
