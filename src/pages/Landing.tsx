@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Microscope } from "lucide-react";
@@ -31,7 +32,7 @@ const Landing: React.FC = () => {
           </div>
 
           <div className="bg-white border rounded-xl p-10 shadow-md max-w-2xl mx-auto">
-            <div className="space-y-8">
+            <div className="space-y-12">
               <div className="flex items-center justify-center space-x-5">
                 <div className="w-14 h-14 rounded-full bg-steg-purple/10 flex items-center justify-center">
                   <Microscope className="h-7 w-7 text-steg-purple" />
