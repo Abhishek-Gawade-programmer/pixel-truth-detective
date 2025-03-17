@@ -1,12 +1,9 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Microscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 const Landing: React.FC = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <header className="bg-white border-b">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
@@ -33,7 +30,7 @@ const Landing: React.FC = () => {
 
           <div className="bg-white border rounded-xl p-10 shadow-md max-w-2xl mx-auto">
             <div className="space-y-12">
-              <div className="flex items-center justify-center space-x-5">
+              <div className="flex items-center justify-center space-x-5 px-0 py-[20px]">
                 <div className="w-14 h-14 rounded-full bg-steg-purple/10 flex items-center justify-center">
                   <Microscope className="h-7 w-7 text-steg-purple" />
                 </div>
@@ -80,8 +77,6 @@ const Landing: React.FC = () => {
           <p>© {new Date().getFullYear()} Pixel Truth Detective | Steganalysis Tool</p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Landing;
