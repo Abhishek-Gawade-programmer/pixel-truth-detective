@@ -1,7 +1,9 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Microscope } from "lucide-react";
+import { ArrowRight, Shield, Microscope, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 const Landing: React.FC = () => {
   return <div className="min-h-screen flex flex-col">
       <header className="bg-white border-b">
@@ -28,24 +30,47 @@ const Landing: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white border rounded-xl p-10 shadow-md max-w-2xl mx-auto">
-            <div className="space-y-12">
-              <div className="flex items-center justify-center space-x-5 px-0 py-[20px]">
-                <div className="w-14 h-14 rounded-full bg-steg-purple/10 flex items-center justify-center">
-                  <Microscope className="h-7 w-7 text-steg-purple" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white border rounded-xl p-10 shadow-md">
+              <div className="space-y-12">
+                <div className="flex items-center justify-center space-x-5 px-0 py-[20px]">
+                  <div className="w-14 h-14 rounded-full bg-steg-purple/10 flex items-center justify-center">
+                    <Microscope className="h-7 w-7 text-steg-purple" />
+                  </div>
+                  <div className="text-left">
+                    <h2 className="font-semibold text-2xl">Steganalysis</h2>
+                    <p className="text-gray-600 mt-1">Detect hidden messages in your images</p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <h2 className="font-semibold text-2xl">Image Steganalysis</h2>
-                  <p className="text-gray-600 mt-1">Detect hidden messages in your images</p>
-                </div>
+                
+                <Link to="/analyze">
+                  <Button className="w-full h-14 text-lg group bg-gradient-to-r from-steg-purple to-steg-blue hover:from-steg-blue hover:to-steg-purple transition-all duration-300" size="lg">
+                    Start Steganalysis
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
-              
-              <Link to="/analyze">
-                <Button className="w-full h-14 text-lg group bg-gradient-to-r from-steg-purple to-steg-blue hover:from-steg-blue hover:to-steg-purple transition-all duration-300" size="lg">
-                  Start Analyzing Images
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
+            </div>
+
+            <div className="bg-white border rounded-xl p-10 shadow-md">
+              <div className="space-y-12">
+                <div className="flex items-center justify-center space-x-5 px-0 py-[20px]">
+                  <div className="w-14 h-14 rounded-full bg-steg-purple/10 flex items-center justify-center">
+                    <Sparkles className="h-7 w-7 text-steg-purple" />
+                  </div>
+                  <div className="text-left">
+                    <h2 className="font-semibold text-2xl">Deepfake Detection</h2>
+                    <p className="text-gray-600 mt-1">Identify AI-generated or manipulated images</p>
+                  </div>
+                </div>
+                
+                <Link to="/deepfake">
+                  <Button className="w-full h-14 text-lg group bg-gradient-to-r from-steg-purple to-steg-blue hover:from-steg-blue hover:to-steg-purple transition-all duration-300" size="lg">
+                    Detect AI Images
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -57,9 +82,9 @@ const Landing: React.FC = () => {
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg border shadow-sm">
-              <h3 className="font-semibold text-lg mb-2">DCT Analysis</h3>
+              <h3 className="font-semibold text-lg mb-2">Deepfake Analysis</h3>
               <p className="text-gray-600">
-                Frequency domain analysis to identify manipulation patterns.
+                Identify if an image was created or manipulated by AI technology.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg border shadow-sm">
@@ -79,4 +104,5 @@ const Landing: React.FC = () => {
       </footer>
     </div>;
 };
+
 export default Landing;

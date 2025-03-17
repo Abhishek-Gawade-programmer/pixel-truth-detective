@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Microscope, History, Shield } from "lucide-react";
+import { Microscope, History, Shield, Sparkles } from "lucide-react";
 
 const Navbar: React.FC = () => {
   return (
@@ -19,6 +19,12 @@ const Navbar: React.FC = () => {
                 <Link to="/analyze" className="flex items-center space-x-1 text-steg-text hover:text-steg-purple transition-colors">
                   <Microscope className="h-4 w-4" />
                   <span>Analyze</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/deepfake" className="flex items-center space-x-1 text-steg-text hover:text-steg-purple transition-colors">
+                  <Sparkles className="h-4 w-4" />
+                  <span>Deepfake</span>
                 </Link>
               </li>
               <li>
