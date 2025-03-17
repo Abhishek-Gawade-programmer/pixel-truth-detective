@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Microscope } from "lucide-react";
@@ -31,20 +30,20 @@ const Landing: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white border rounded-lg p-8 shadow-lg max-w-2xl mx-auto">
-            <div className="space-y-6">
-              <div className="flex items-center justify-center space-x-4">
-                <div className="w-12 h-12 rounded-full bg-steg-purple/10 flex items-center justify-center">
-                  <Microscope className="h-6 w-6 text-steg-purple" />
+          <div className="bg-white border rounded-xl p-10 shadow-md max-w-2xl mx-auto">
+            <div className="space-y-8">
+              <div className="flex items-center justify-center space-x-5">
+                <div className="w-14 h-14 rounded-full bg-steg-purple/10 flex items-center justify-center">
+                  <Microscope className="h-7 w-7 text-steg-purple" />
                 </div>
                 <div className="text-left">
-                  <h2 className="font-semibold text-xl">Image Steganalysis</h2>
-                  <p className="text-gray-600">Detect hidden messages in your images</p>
+                  <h2 className="font-semibold text-2xl">Image Steganalysis</h2>
+                  <p className="text-gray-600 mt-1">Detect hidden messages in your images</p>
                 </div>
               </div>
               
               <Link to="/analyze">
-                <Button className="w-full h-16 text-lg group" size="lg">
+                <Button className="w-full h-14 text-lg group bg-gradient-to-r from-steg-purple to-steg-blue hover:from-steg-blue hover:to-steg-purple transition-all duration-300" size="lg">
                   Start Analyzing Images
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
