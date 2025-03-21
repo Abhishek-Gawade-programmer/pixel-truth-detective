@@ -1,3 +1,4 @@
+
 import { pipeline } from "@huggingface/transformers";
 
 export interface DeepfakeResult {
@@ -25,7 +26,7 @@ const getClassifier = async () => {
       "image-classification",
       "Xiang-cd/DiFace-aig",
       { 
-        token: HF_TOKEN,
+        accessToken: HF_TOKEN,
         quantized: false
       }
     ).catch((error) => {
