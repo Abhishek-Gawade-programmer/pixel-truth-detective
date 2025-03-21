@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import ImageUploader from "@/components/ImageUploader";
 import ImagePreview from "@/components/ImagePreview";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles, Check, X, Shield, ArrowRight, AlertTriangle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { detectDeepfake, saveToHistory, DeepfakeResult } from "@/services/deepfakeDetectionService";
+
+// Import refactored components
+import ResultCard from "@/components/deepfake/ResultCard";
+import AnalysisLoading from "@/components/deepfake/AnalysisLoading";
+import AnalysisPrompt from "@/components/deepfake/AnalysisPrompt";
+import AnalysisExplanation from "@/components/deepfake/AnalysisExplanation";
 
 const DeepfakeDetection: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -65,67 +67,6 @@ const DeepfakeDetection: React.FC = () => {
       setIsAnalyzing(false);
     }
   };
-
-  const ResultCard = ({ result }: { result: DeepfakeResult }) => {
-    return (
-      <Card className="overflow-hidden">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              {result.isAIGenerated ? (
-                <Sparkles className="h-6 w-6 text-orange-500 mr-2" />
-              ) : (
-                <Check className="h-6 w-6 text-green-500 mr-2" />
-              )}
-              <h3 className="text-lg font-semibold">
-                {result.isAIGenerated ? "AI-Generated Content Detected" : "Authentic Image"}
-              </h3>
-            </div>
-            <span className="text-sm font-medium text-gray-500">
-              {result.confidence}% Confidence
-            </span>
-          </div>
-          
-          <div className="mb-6">
-            <div className="flex justify-between text-sm mb-1">
-              <span>Real</span>
-              <span>AI-Generated</span>
-            </div>
-            <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div 
-                className={`absolute top-0 left-0 h-full ${result.isAIGenerated ? 'bg-orange-500' : 'bg-green-500'}`}
-                style={{ width: `${result.confidence}%` }}
-              ></div>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <div>
-              <h4 className="text-sm font-medium mb-2">Analysis Details</h4>
-              <p className="text-sm text-gray-600">
-                Our {result.modelName} analyzed this image and determined it is {result.isAIGenerated ? "likely" : "unlikely"} to be AI-generated or manipulated.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="text-sm font-medium mb-2">Detection Classes</h4>
-              <div className="space-y-2">
-                {result.classes.map((cls, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <span className="text-sm">{cls.label}</span>
-                    <div className="flex items-center">
-                      <Progress value={cls.score * 100} className="w-24 h-2 mr-2" />
-                      <span className="text-xs font-mono">{(cls.score * 100).toFixed(1)}%</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
   
   return (
     <Layout>
@@ -158,28 +99,9 @@ const DeepfakeDetection: React.FC = () => {
                 ) : (
                   <>
                     {isAnalyzing ? (
-                      <Card className="overflow-hidden">
-                        <CardContent className="p-6 flex flex-col items-center justify-center text-center h-64">
-                          <Sparkles className="h-8 w-8 text-steg-purple animate-pulse mb-4" />
-                          <h3 className="text-lg font-medium mb-2">Analyzing Image</h3>
-                          <p className="text-gray-500 text-sm mb-4">
-                            Our AI model is examining the image for signs of AI generation...
-                          </p>
-                          <Progress className="w-full max-w-xs" value={undefined} />
-                        </CardContent>
-                      </Card>
+                      <AnalysisLoading />
                     ) : (
-                      <div className="bg-gray-50 rounded-lg p-8 text-center border">
-                        <Shield className="h-12 w-12 text-steg-purple mx-auto mb-4" />
-                        <h3 className="text-lg font-medium mb-2">Ready to Analyze</h3>
-                        <p className="text-gray-500 text-sm mb-4">
-                          Click the button below to begin the AI detection process on your image.
-                        </p>
-                        <Button onClick={handleAnalyze} className="w-full">
-                          Start AI Detection
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </Button>
-                      </div>
+                      <AnalysisPrompt onAnalyze={handleAnalyze} />
                     )}
                   </>
                 )}
@@ -187,41 +109,7 @@ const DeepfakeDetection: React.FC = () => {
             </div>
             
             {result && (
-              <div className="bg-gray-50 rounded-lg p-6 border">
-                <h3 className="text-lg font-medium mb-4">Detection Explanation</h3>
-                <p className="text-gray-600 mb-4">
-                  {result.isAIGenerated 
-                    ? "This image appears to have characteristics commonly found in AI-generated or manipulated content. The analysis detected patterns consistent with artificial creation methods." 
-                    : "This image appears to be authentic. Our analysis did not detect significant patterns that would indicate it was generated or manipulated by AI."
-                  }
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="text-sm font-medium mb-2">What To Look For</h4>
-                    <p className="text-sm text-gray-600">
-                      AI-generated images often have subtle inconsistencies in facial features, unnatural backgrounds, irregular lighting, or unusual artifacts. Our model is trained to detect these patterns.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium mb-2">Limitations</h4>
-                    <p className="text-sm text-gray-600">
-                      No detection system is perfect. AI technology is constantly evolving, making detection challenging. Always use critical thinking when evaluating digital content.
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-6 flex items-center justify-between">
-                  <Button onClick={handleReset} variant="outline">
-                    Analyze Another Image
-                  </Button>
-                  
-                  {result.isAIGenerated && (
-                    <div className="flex items-center text-orange-600 text-sm">
-                      <AlertTriangle className="h-4 w-4 mr-1" />
-                      <span>Content may be AI-generated</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <AnalysisExplanation result={result} onReset={handleReset} />
             )}
           </div>
         )}
