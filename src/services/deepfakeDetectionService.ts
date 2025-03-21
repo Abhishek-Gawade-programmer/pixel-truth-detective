@@ -14,6 +14,9 @@ export interface DeepfakeResult {
 // Helper function to introduce a delay to simulate processing
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Hugging Face token for authentication
+const HF_TOKEN = "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";
+
 // Load the image classification model
 let classifierPromise: Promise<any> | null = null;
 
@@ -22,7 +25,10 @@ const getClassifier = async () => {
     classifierPromise = pipeline(
       "image-classification",
       "Xiang-cd/DiFace-aig",
-      { quantized: true }
+      { 
+        accessToken: HF_TOKEN,
+        quantized: false
+      }
     ).catch((error) => {
       console.error("Error loading model:", error);
       classifierPromise = null;
@@ -102,25 +108,30 @@ export const saveToHistory = (
   filename: string,
   result: DeepfakeResult
 ): void => {
-  const historyItem: DetectionHistoryItem = {
-    id: Date.now().toString(),
-    imageUrl,
-    filename,
-    date: new Date(),
-    result
-  };
-  
-  // Get current history
-  const history = getDetectionHistory();
-  
-  // Add new item to the beginning
-  history.unshift(historyItem);
-  
-  // Limit history to 50 items
-  const limitedHistory = history.slice(0, 50);
-  
-  // Save to localStorage
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(limitedHistory));
+  try {
+    const historyItem: DetectionHistoryItem = {
+      id: Date.now().toString(),
+      imageUrl,
+      filename,
+      date: new Date(),
+      result
+    };
+    
+    // Get current history
+    const history = getDetectionHistory();
+    
+    // Add new item to the beginning
+    history.unshift(historyItem);
+    
+    // Limit history to 20 items to avoid quota exceeded errors
+    const limitedHistory = history.slice(0, 20);
+    
+    // Save to localStorage
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(limitedHistory));
+  } catch (error) {
+    console.error('Error saving to history:', error);
+    // Silently fail - we don't want to interrupt the user experience for a history saving issue
+  }
 };
 
 // Get detection history
