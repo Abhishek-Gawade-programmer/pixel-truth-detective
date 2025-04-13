@@ -2,17 +2,38 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Sparkles, Check } from "lucide-react";
+import { Sparkles, Check, FileDown } from "lucide-react";
 import { DeepfakeResult } from "@/services/deepfakeDetectionService";
+import { Button } from "@/components/ui/button";
+import { generatePDF } from "@/services/pdfService";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ResultCardProps {
   result: DeepfakeResult;
 }
 
 const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
+  const { toast } = useToast();
+
+  const handleDownloadPDF = async () => {
+    try {
+      await generatePDF("deepfake-result", "deepfake-analysis-report");
+      toast({
+        title: "Success",
+        description: "Report downloaded successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to download report",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card className="overflow-hidden">
-      <CardContent className="p-6">
+      <CardContent className="p-6" id="deepfake-result">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             {result.isAIGenerated ? (
@@ -66,6 +87,17 @@ const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
           </div>
         </div>
       </CardContent>
+      <div className="bg-gray-50 p-4 border-t">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="flex items-center" 
+          onClick={handleDownloadPDF}
+        >
+          <FileDown className="h-4 w-4 mr-2" />
+          Download PDF Report
+        </Button>
+      </div>
     </Card>
   );
 };

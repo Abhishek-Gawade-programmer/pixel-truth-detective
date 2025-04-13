@@ -26,7 +26,8 @@ const getClassifier = async () => {
       "image-classification",
       "Xiang-cd/DiFace-aig",
       { 
-        accessToken: HF_TOKEN,
+        // Use token directly as HF library expects it
+        token: HF_TOKEN,
         quantized: false
       }
     ).catch((error) => {
