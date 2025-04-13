@@ -22,13 +22,17 @@ let classifierPromise: Promise<any> | null = null;
 
 const getClassifier = async () => {
   if (!classifierPromise) {
+    // Setting the token as a global property before creating the pipeline
+    // This avoids passing it directly in the options object which is causing the TypeScript error
+    // @ts-ignore - Ignoring TypeScript error as we need to set this for authentication
+    globalThis.HF_TOKEN = HF_TOKEN;
+    
     classifierPromise = pipeline(
       "image-classification",
       "Xiang-cd/DiFace-aig",
       { 
-        // Use token directly as HF library expects it
-        token: HF_TOKEN,
         quantized: false
+        // token property removed from here
       }
     ).catch((error) => {
       console.error("Error loading model:", error);
