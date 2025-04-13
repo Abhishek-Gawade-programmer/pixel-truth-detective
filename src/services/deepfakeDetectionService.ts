@@ -1,4 +1,3 @@
-
 import { pipeline } from "@huggingface/transformers";
 
 export interface DeepfakeResult {
@@ -30,10 +29,7 @@ const getClassifier = async () => {
     classifierPromise = pipeline(
       "image-classification",
       "Xiang-cd/DiFace-aig",
-      { 
-        quantized: false
-        // token property removed from here
-      }
+      { } // Empty options object - removed properties that cause TypeScript errors
     ).catch((error) => {
       console.error("Error loading model:", error);
       classifierPromise = null;
