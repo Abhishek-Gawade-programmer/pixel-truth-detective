@@ -1,3 +1,4 @@
+
 import { pipeline } from "@huggingface/transformers";
 
 export interface DeepfakeResult {
@@ -21,15 +22,13 @@ let classifierPromise: Promise<any> | null = null;
 
 const getClassifier = async () => {
   if (!classifierPromise) {
-    // Setting the token as a global property before creating the pipeline
-    // This avoids passing it directly in the options object which is causing the TypeScript error
-    // @ts-ignore - Ignoring TypeScript error as we need to set this for authentication
-    globalThis.HF_TOKEN = HF_TOKEN;
-    
     classifierPromise = pipeline(
       "image-classification",
       "Xiang-cd/DiFace-aig",
-      { } // Empty options object - removed properties that cause TypeScript errors
+      { 
+        accessToken: HF_TOKEN,
+        quantized: false
+      }
     ).catch((error) => {
       console.error("Error loading model:", error);
       classifierPromise = null;

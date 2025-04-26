@@ -1,11 +1,8 @@
 
 import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Shield, AlertCircle, CheckCircle2, FileDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { generatePDF } from "@/services/pdfService";
-import { useToast } from "@/components/ui/use-toast";
+import { Shield, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export interface SteganalysisResultData {
   overallScore: number;
@@ -22,7 +19,6 @@ interface SteganalysisResultProps {
 
 const SteganalysisResult: React.FC<SteganalysisResultProps> = ({ result, isLoading }) => {
   const { overallScore, lsbScore, dctScore, hasHiddenData, confidence } = result;
-  const { toast } = useToast();
   
   // Determine the status color based on the detection
   const getStatusColor = () => {
@@ -45,22 +41,6 @@ const SteganalysisResult: React.FC<SteganalysisResultProps> = ({ result, isLoadi
       ? <AlertCircle className="h-6 w-6 text-steg-red" /> 
       : <CheckCircle2 className="h-6 w-6 text-green-500" />;
   };
-
-  const handleDownloadPDF = async () => {
-    try {
-      await generatePDF("steganalysis-result", "steganalysis-report");
-      toast({
-        title: "Success",
-        description: "Report downloaded successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to download report",
-        variant: "destructive",
-      });
-    }
-  };
   
   return (
     <div className="space-y-4">
@@ -79,7 +59,7 @@ const SteganalysisResult: React.FC<SteganalysisResultProps> = ({ result, isLoadi
               : "Analysis completed with the following results:"}
           </CardDescription>
         </CardHeader>
-        <CardContent id="steganalysis-result">
+        <CardContent>
           {isLoading ? (
             <div className="relative h-40 w-full bg-gray-100 rounded-md overflow-hidden">
               <div className="scanner-line animate-scanning"></div>
@@ -143,19 +123,6 @@ const SteganalysisResult: React.FC<SteganalysisResultProps> = ({ result, isLoadi
             </div>
           )}
         </CardContent>
-        {!isLoading && (
-          <CardFooter className="bg-gray-50 border-t">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex items-center" 
-              onClick={handleDownloadPDF}
-            >
-              <FileDown className="h-4 w-4 mr-2" />
-              Download PDF Report
-            </Button>
-          </CardFooter>
-        )}
       </Card>
     </div>
   );

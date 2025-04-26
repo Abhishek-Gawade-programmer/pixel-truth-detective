@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Microscope, Sparkles, History } from "lucide-react";
+import { ArrowRight, Shield, Microscope, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Landing: React.FC = () => {
@@ -13,16 +13,6 @@ const Landing: React.FC = () => {
               <Shield className="h-8 w-8 text-steg-purple" />
               <span className="font-bold text-xl gradient-heading">Pixel Truth Detective</span>
             </div>
-            <nav>
-              <ul className="flex space-x-8">
-                <li>
-                  <Link to="/history" className="flex items-center space-x-1 text-steg-text hover:text-steg-purple transition-colors">
-                    <History className="h-4 w-4" />
-                    <span>History</span>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </header>
@@ -116,4 +106,3 @@ const Landing: React.FC = () => {
 };
 
 export default Landing;
-
